@@ -5,6 +5,56 @@
 #include <iostream>
 #include "cards.h"
 
+// configuration
+// -------------
+
+//default: real blackjack
+int g_nrofDecks = 6;
+bool g_miniBlackjack = false;
+int g_highestCardNr = 13; //king
+  // cards have numbers from 1 to highestCardNr()
+int g_highestCardValue = 10; 
+  //cardNr >= highestCardValue() --> value of this card is highestCardValue()
+int g_dealerMustStandOn = 17;
+int g_aceSoftValue = 11;
+int g_goalValue = 21;
+
+void setnrofDecks(int n) {
+    assert(n >= 1);
+    g_nrofDecks = n;
+}
+
+void setMiniBlackJack(bool on) {
+    g_miniBlackjack = on;
+    if (g_miniBlackjack) {
+        g_highestCardNr = 5;
+        g_highestCardValue = 5; 
+        g_dealerMustStandOn = 9;
+    } else {
+        g_highestCardNr = 13;
+        g_highestCardValue = 10; 
+        g_dealerMustStandOn = 17;
+    }
+    g_aceSoftValue = g_highestCardValue + 1;
+    g_goalValue = g_highestCardValue + g_aceSoftValue;
+}
+
+int highestCardNr() {return g_highestCardNr;}
+
+int highestCardValue() {return g_highestCardValue;}
+
+int dealerMustStandOn() {return g_dealerMustStandOn;}
+
+int aceSoftValue() {return g_aceSoftValue;}
+
+int goalValue() {return g_goalValue;}
+
+int nrofDecks() {return g_nrofDecks;}
+
+int nrofCardsPerCardNrInGame() {return nrofCardsPerCardNrInDeck * g_nrofDecks;}
+
+
+
 //sum the cardValues, counting all aces with 1.
 //note, whether an ace occurs
 void simpleSum(int& sum, bool& aceFound, const Hand& hand) {
@@ -13,7 +63,7 @@ void simpleSum(int& sum, bool& aceFound, const Hand& hand) {
     Hand::const_iterator vi;
     for (vi = hand.begin(); vi != hand.end(); vi++)
     {
-        int value = std::min(*vi,highestCardValue);
+        int value = std::min(*vi,g_highestCardValue);
         sum += value;
         aceFound = aceFound || (*vi == 1);
     }
@@ -24,10 +74,10 @@ int playerHandValue(const Hand& hand) {
     bool aceFound;
     int sum;
     simpleSum(sum, aceFound, hand);
-    //check, whether first ace can be counted with aceSoftValue
+    //check, whether first ace can be counted with aceSoftValue()
     if (aceFound) {
-        int sum2 = sum + highestCardValue; //cf. definition of aceSoftValue
-        if (sum2 <= goalValue) {
+        int sum2 = sum + g_highestCardValue; //cf. definition of aceSoftValue()
+        if (sum2 <= g_goalValue) {
             sum = sum2;
         }
     }
@@ -42,12 +92,12 @@ int dealerHandValue(const Hand& hand) {
     Hand::const_iterator vi;
     for (vi = hand.begin(); vi != hand.end(); vi++)
     {
-        int value = std::min(*vi,highestCardValue);
+        int value = std::min(*vi,g_highestCardValue);
         sum += value;
         if (!aceFound && value == 1) {
             aceFound = true;
-            int sum2 = sum + highestCardValue; //cf. definition of aceSoftValue
-            if (sum2 <= goalValue) {
+            int sum2 = sum + g_highestCardValue; //cf. definition of aceSoftValue()
+            if (sum2 <= g_goalValue) {
                 sum = sum2;
             }
         }
@@ -58,8 +108,8 @@ int dealerHandValue(const Hand& hand) {
 
 bool blackJack(const Hand& hand) {
     return  hand.size() == 2 && 
-            (   (hand[0] == 1 && hand[1] >= highestCardValue) ||
-                (hand[0] >= highestCardValue && hand[1] == 1)
+            (   (hand[0] == 1 && hand[1] >= g_highestCardValue) ||
+                (hand[0] >= g_highestCardValue && hand[1] == 1)
             );
 }            
 
@@ -86,17 +136,17 @@ std::string handToString(const Hand& hand) {
 
 void getCardProbabilities (CardProbabilities& cardProbabilites, const Hand& playerHand, const Hand& dealerHand) {
     /* -- simpliefied
-    cardProbabilites.resize(highestCardNr);
-    for (int n = 1; n <= highestCardNr; n++) {
-        cardProbabilites[n-1] = 1.0/highestCardNr;
+    cardProbabilites.resize(g_highestCardNr);
+    for (int n = 1; n <= g_highestCardNr; n++) {
+        cardProbabilites[n-1] = 1.0/g_highestCardNr;
     }
     */
    /* -- not yet*/
     CardSet remainingCards;
     getRemainingCards(remainingCards, playerHand, dealerHand);
-    cardProbabilites.resize(highestCardNr);
+    cardProbabilites.resize(g_highestCardNr);
     double nrofRemainingCards = double(remainingCards.size());
-    for (int n = 1; n <= highestCardNr; n++) {
+    for (int n = 1; n <= g_highestCardNr; n++) {
         cardProbabilites[n-1] = remainingCards.count(n)/nrofRemainingCards;
     }
    /**/
@@ -134,8 +184,8 @@ void removeCards(CardSet& cards, const Hand& hand) {
 void getRemainingCards(CardSet& cards, const Hand& playerHand, const Hand& dealerHand) {
     //initialize allCards if necessary
     if (gAllCards.empty()) {
-        for (int n = 1; n <= highestCardNr; n++) {
-            for (int count = 1; count <= nrofCardsPerCardNrInGame; count++) {
+        for (int n = 1; n <= g_highestCardNr; n++) {
+            for (int count = 1; count <= nrofCardsPerCardNrInGame(); count++) {
                 gAllCards.insert(n);
             }
         }

@@ -37,11 +37,11 @@ public: //everything, as the class is internal
      */
     void evaluate() {
         int dValue = dealerHandValue(dealerHand);
-        if (dValue > goalValue) {
+        if (dValue > goalValue()) {
             //case0
             expectedWin = 1.0;
         }
-        else if (dValue >= dealerMustStandOn) {
+        else if (dValue >= dealerMustStandOn()) {
             //case1
             assert(dealerHand.size() >= 2);
             if (blackJack(gpHand) && blackJack(dealerHand)) {
@@ -66,7 +66,7 @@ public: //everything, as the class is internal
             getCardProbabilities(cps, gpHand, dealerHand);
             //make the list of children, at the same time, evaluate each node and update weighted sum
             double weightedSum = 0.0;
-            for (int cardNr = 1; cardNr <= highestCardNr; cardNr++) {
+            for (int cardNr = 1; cardNr <= highestCardNr(); cardNr++) {
                 //create child node
                 Hand h = dealerHand;
                 h.push_back(cardNr);
@@ -102,7 +102,7 @@ public: //everything, as the class is internal
 };
 
 double expectedWinOnStand(const Hand& playerHand, int dealerCard, bool printTree) {
-    assert(playerHandValue(playerHand) <= goalValue); //not a bust
+    assert(playerHandValue(playerHand) <= goalValue()); //not a bust
     assert(playerHand.size() >= 2); //otherwise no stand
     //create the root node containing this card
     //DealerNode::playerHand = playerHand; -- linker complains about "unefined symbols"

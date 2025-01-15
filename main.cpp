@@ -16,13 +16,16 @@ using namespace std;
     testCards();
     testDealer();
 
-#ifdef MINI_BLACK_JACK
-    double ew = expectedWinOnStand({4,3}, 5, true);
-#else
+    setMiniBlackJack(false);
     double ew = expectedWinOnStand({8,9}, 12, true);
-#endif
-    cout << "expected win on stand" << ew << std::endl;
 
+    /*
+    setMiniBlackJack(true);
+    double ew = expectedWinOnStand({4,3}, 5, true);
+   */
+ 
+    cout << "expected win on stand" << ew << std::endl;
+    
     return 0;
  }
 //(prevent eol warning)

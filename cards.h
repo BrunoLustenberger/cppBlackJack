@@ -4,31 +4,21 @@
 #include <vector>
 #include <set>
 
-//#define MINI_BLACK_JACK
-
-#ifndef MINI_BLACK_JACK  // real blackjack
-
-const int highestCardNr = 13; //king
-  // cards have numbers from 1 to highestCardNr
-const int highestCardValue = 10; 
-  //cardNr >= highestCardValue --> value of this card is highestCardValue
-const int dealerMustStandOn = 17;
-
-#else // a mini version of blackjack, needs less computation
-
-const int highestCardNr = 5;
-const int highestCardValue = 5; 
-const int dealerMustStandOn = 9;
-
-#endif
-
 const int nrofCardsPerCardNrInDeck = 4;
     // Note: in blackjack, the suit of a card is irrelevant
     // e.g. we just have 4 kings in each deck.
-const int aceSoftValue = highestCardValue + 1;
-const int goalValue = highestCardValue + aceSoftValue;
-const int nrofDecks = 6;
-const int nrofCardsPerCardNrInGame = nrofCardsPerCardNrInDeck * nrofDecks;
+
+void setMiniBlackJack(bool on);
+
+void setnrofDecks(int n);
+
+int highestCardNr();
+int highestCardValue();
+int dealerMustStandOn();
+int aceSoftValue();
+int goalValue();
+int nrofDecks();
+int nrofCardsPerCardNrInGame();
 
 /**
  * A hand is a sequence of cards. The order of the cards is relevant, when
