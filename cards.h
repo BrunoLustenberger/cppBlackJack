@@ -9,6 +9,7 @@ const int nrofCardsPerCardNrInDeck = 4;
     // e.g. we just have 4 kings in each deck.
 
 void setMiniBlackJack(bool on);
+bool miniBlackJack();
 
 void setnrofDecks(int n);
 

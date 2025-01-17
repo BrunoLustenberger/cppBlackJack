@@ -22,9 +22,9 @@ void testDealerHandValue() {
     assert(dealerHandValue({1,highestCardValue()-1,2}) == goalValue()+1);
     assert(dealerHandValue({1,highestCardValue()-2,1}) == goalValue()-1);
     assert(dealerHandValue({1,1,1}) == aceSoftValue()+2);
-    #ifdef MINI_BLACK_JACK
-        assert(dealerHandValue({5,2,1}) == 8); 
-    #endif
+    if (miniBlackJack()) {
+        assert(dealerHandValue({5,2,1}) == 7);
+    }
 }
 
 void testBlackJack() {

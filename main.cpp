@@ -13,6 +13,10 @@ using namespace std;
  
     cout << "testing Black Jack computations" << endl;
 
+    setMiniBlackJack(true);
+    testCards();
+    testDealer();
+    setMiniBlackJack(false);
     testCards();
     testDealer();
 

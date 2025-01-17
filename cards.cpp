@@ -28,8 +28,8 @@ void setMiniBlackJack(bool on) {
     g_miniBlackjack = on;
     if (g_miniBlackjack) {
         g_highestCardNr = 5;
-        g_highestCardValue = 5; 
-        g_dealerMustStandOn = 9;
+        g_highestCardValue = 4; 
+        g_dealerMustStandOn = 7;
     } else {
         g_highestCardNr = 13;
         g_highestCardValue = 10; 
@@ -37,6 +37,10 @@ void setMiniBlackJack(bool on) {
     }
     g_aceSoftValue = g_highestCardValue + 1;
     g_goalValue = g_highestCardValue + g_aceSoftValue;
+}
+
+bool miniBlackJack() {
+    return g_miniBlackjack;
 }
 
 int highestCardNr() {return g_highestCardNr;}
