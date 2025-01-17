@@ -46,6 +46,18 @@ bool blackJack(const Hand& hand);
 std::string handToString(const Hand& hand);
 
 /**
+ * Convert a string into a hand
+ * Invalid if errorMessage != empty.
+ */
+void stringToHand(const std::string& s, Hand& hand, std::string& errorMessage);
+
+/**
+ * Convert a char into a cardNr
+ * Invalid if errorMessage != empty.
+ */
+void charToCardNr(char c, int& cardNr, std::string& errorMessage);
+
+/**
  * Probability of a cardNr given hands of player and dealer
  * Probability of cardNr n is at index n-1
  */

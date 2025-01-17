@@ -2,6 +2,7 @@
 #include "cards_test.h"
 #include "dealer_test.h"
 #include "dealer.h"
+#include "user.h"
 using namespace std;
 
 /**
@@ -10,22 +11,41 @@ using namespace std;
 
  int main() {
  
-    cout << "testing Black Jack computations";
-    cout << endl;
+    cout << "testing Black Jack computations" << endl;
 
     testCards();
     testDealer();
 
-    setMiniBlackJack(false);
-    double ew = expectedWinOnStand({8,9}, 12, true);
+    int nrofDecks;
+    bool mini;
+    Hand playerHand;
+    int dealerCardNr;
+    bool printDealerTree;
+    bool printPlayerTree;
+    string errorMessage;
+
+    getUserInput(nrofDecks, mini, playerHand, dealerCardNr, 
+        printDealerTree, printPlayerTree, errorMessage);
+
+    if (errorMessage != "") {
+        cout << "invalid user input: " << errorMessage << endl;
+        return 1;
+    }
+
+    cout << "Blackjack computations for your input" << endl;
+
+    setnrofDecks(nrofDecks);
+    setMiniBlackJack(mini);
+
+    double ew = expectedWinOnStand(playerHand, dealerCardNr, printDealerTree);
 
     /*
     setMiniBlackJack(true);
     double ew = expectedWinOnStand({4,3}, 5, true);
    */
  
-    cout << "expected win on stand" << ew << std::endl;
-    
+    cout << "expected win on stand" << ew << endl;
+
     return 0;
  }
 //(prevent eol warning)

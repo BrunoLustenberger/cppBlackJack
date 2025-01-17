@@ -134,14 +134,55 @@ std::string handToString(const Hand& hand) {
     return oss.str();
 }
 
-void getCardProbabilities (CardProbabilities& cardProbabilites, const Hand& playerHand, const Hand& dealerHand) {
-    /* -- simpliefied
-    cardProbabilites.resize(g_highestCardNr);
-    for (int n = 1; n <= g_highestCardNr; n++) {
-        cardProbabilites[n-1] = 1.0/g_highestCardNr;
+void stringToHand(const std::string& s, Hand& hand, std::string& errorMessage) {
+    size_t l = s.length();
+    hand.resize(l);
+    errorMessage = "";
+    int cardNr;
+    for (int n = 0; n < l; n++) {
+        charToCardNr(s[n], cardNr, errorMessage);
+        if (errorMessage != "") {return;}
+        hand[n] = cardNr;
     }
-    */
-   /* -- not yet*/
+}
+
+void charToCardNr(char c, int& cardNr, std::string& errorMessage) {
+    int nc= static_cast<int>(c) - static_cast<int>('0');
+    errorMessage = "";
+    if (g_miniBlackjack) {
+        if (1 <= nc && nc <= g_highestCardNr) {
+            cardNr = nc;
+            return;
+        }
+        errorMessage = "invalid char: ";
+        errorMessage.push_back(c);
+    } else {
+        if (1 <= nc && nc <= 9) {
+            cardNr = nc;
+            return;
+        } else {
+            switch(c) {
+            case 'X':
+                cardNr = 10;
+                break;
+            case 'J':
+                cardNr = 11;
+                break;
+            case 'Q':
+                cardNr = 12;
+                break;
+            case 'K':
+                cardNr = 13;
+                break;
+            default:
+                errorMessage = "invalid char: ";
+                errorMessage.push_back(c);
+            }
+        }
+    }
+}
+
+void getCardProbabilities (CardProbabilities& cardProbabilites, const Hand& playerHand, const Hand& dealerHand) {
     CardSet remainingCards;
     getRemainingCards(remainingCards, playerHand, dealerHand);
     cardProbabilites.resize(g_highestCardNr);
@@ -149,7 +190,6 @@ void getCardProbabilities (CardProbabilities& cardProbabilites, const Hand& play
     for (int n = 1; n <= g_highestCardNr; n++) {
         cardProbabilites[n-1] = remainingCards.count(n)/nrofRemainingCards;
     }
-   /**/
 }
 
 std::string probabilityToString(double probability) {
