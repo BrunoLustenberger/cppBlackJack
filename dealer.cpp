@@ -113,11 +113,13 @@ double expectedWinOnStand(const Hand& playerHand, int dealerCard, bool printTree
     //evaluate the node
     rootNode.evaluate();
     //print if enabled
-    std::cout << "player hand: " << handToString(playerHand) 
-              << " dealer card: " << handToString(dealerHand)
-              << std::endl;
-    std::cout << "each line shows dealer hand, probability, expected win" << std::endl;
-    rootNode.print(0);
+    if (printTree) {
+        std::cout << "player hand: " << handToString(playerHand) 
+                  << " dealer card: " << handToString(dealerHand)
+                  << std::endl;
+        std::cout << "each line shows dealer hand, probability, expected win" << std::endl;
+        rootNode.print(0);
+    }
     //return its expected win.
     return rootNode.expectedWin;
 }

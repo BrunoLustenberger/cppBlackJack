@@ -5,12 +5,17 @@
 
 
 /**
- * Compute the expected win of the player given a hand of the player and first card of the dealer.
- * It is assumed, that the player stands and thus the dealer draws until they must stop.
- * Optionally the entire tree of possible cards for the dealer is printed to std::cout.
+ * Compute the expected win of the player when they STAND, i.e. don't draw any more cards.
+ * The dealer must now draw cards until they must stop.
+ * The hand of the player and first card card of the dealer are given.
+ * The given hand of the player can be any hand, i.e. can contain more than 2 cards.
  * A bet of 1$ is assumed.
- * precondition: the playerHand is not a bust
+ * Optionally the entire tree of possible draws for the dealer is printed to std::cout.
+ * In this tree, each node contains the expected win for STAND.
+ * Precondition: the playerHand is not a bust
  */
+
+  
 double expectedWinOnStand(const Hand& playerHand, int dealerCard, bool printTree);
 
 #endif

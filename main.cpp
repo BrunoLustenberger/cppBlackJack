@@ -2,6 +2,7 @@
 #include "cards_test.h"
 #include "dealer_test.h"
 #include "dealer.h"
+#include "player.h"
 #include "user.h"
 using namespace std;
 
@@ -41,14 +42,11 @@ using namespace std;
     setnrofDecks(nrofDecks);
     setMiniBlackJack(mini);
 
-    double ew = expectedWinOnStand(playerHand, dealerCardNr, printDealerTree);
+    double ewStand = expectedWinOnStand(playerHand, dealerCardNr, printDealerTree);
+    double ewHit = expectedWinOnHit(playerHand, dealerCardNr, printPlayerTree);
 
-    /*
-    setMiniBlackJack(true);
-    double ew = expectedWinOnStand({4,3}, 5, true);
-   */
- 
-    cout << "expected win on stand" << ew << endl;
+    cout << "expected win on stand: " << ewStand << endl;
+    cout << "expected win on hit: " << ewHit << endl;
 
     return 0;
  }
